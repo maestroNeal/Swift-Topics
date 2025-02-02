@@ -17,11 +17,17 @@ protocol iosEngineerSkillsSet {
     func getLang()
 }
 class iosEngineer: Employee, iosEngineerSkillsSet, devOpsEngineerSkillsSet, backEndSkillsSet {
+    deinit {
+        debugPrint("iosEngineer class removed")
+    }
 }
 
 class androidEnginner: Employee {
     func getLang(){
         print("\(name) have knowledge of java and kotlin.")
+    }
+    deinit {
+        debugPrint("androidEnginner class removed")
     }
 }
 
@@ -29,14 +35,18 @@ protocol devOpsEngineerSkillsSet {
     func getDevOpsEngineerInfo()
 }
 class devOpsEngineer: Employee, devOpsEngineerSkillsSet {
-    
+    deinit {
+        debugPrint("devOpsEngineer class removed")
+    }
 }
 
 protocol backEndSkillsSet {
     func getBackEndEngineerInfo()
 }
 class backEndEngineer : Employee, backEndSkillsSet {
-   
+    deinit {
+        debugPrint("backEndEngineer class removed")
+    }
 }
 
 extension iosEngineerSkillsSet {
@@ -57,11 +67,12 @@ extension backEndSkillsSet {
 }
 
 
-    let emp = Employee(name: "jai")
-    emp.getDetails()
-    let emp1 = iosEngineer(name: "Rahul")
-    emp1.getDetails()
-    emp1.getLang()
-    emp1.getBackEndEngineerInfo()
-    emp1.getDevOpsEngineerInfo()
-
+var emp: Employee? = Employee(name: "jai")
+    emp?.getDetails()
+emp = nil
+var emp1:iosEngineer? = iosEngineer(name: "Rahul")
+    emp1?.getDetails()
+    emp1?.getLang()
+    emp1?.getBackEndEngineerInfo()
+    emp1?.getDevOpsEngineerInfo()
+emp1 = nil

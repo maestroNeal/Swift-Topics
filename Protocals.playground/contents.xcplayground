@@ -3,5 +3,6 @@
     <pages>
         <page name='ARC'/>
         <page name='Protocals'/>
+        <page name='ClassVsStructs'/>
     </pages>
 </playground>
