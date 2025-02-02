@@ -1,7 +1,7 @@
 import UIKit
 
 class Employee {
-    var name: String
+    var name: String?
     
     init(name: String) {
         self.name = name
@@ -9,12 +9,14 @@ class Employee {
     func getDetails() {
         print("\(name) is the employee of hastree.")
     }
+    deinit {
+        debugPrint("Employee class removed")
+    }
 }
 protocol iosEngineerSkillsSet {
     func getLang()
 }
 class iosEngineer: Employee, iosEngineerSkillsSet, devOpsEngineerSkillsSet, backEndSkillsSet {
-    
 }
 
 class androidEnginner: Employee {
@@ -62,3 +64,4 @@ extension backEndSkillsSet {
     emp1.getLang()
     emp1.getBackEndEngineerInfo()
     emp1.getDevOpsEngineerInfo()
+
