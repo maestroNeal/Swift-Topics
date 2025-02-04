@@ -4,5 +4,6 @@
         <page name='ARC'/>
         <page name='Protocals'/>
         <page name='ClassVsStructs'/>
+        <page name='Encodable &amp; Decodable'/>
     </pages>
 </playground>
