@@ -2,7 +2,7 @@
 
 import UIKit
 
-@objc public enum RequiredLanguage: Int {
+@objc  enum RequiredLanguage: Int {
     case english, japanese, spanish
     
      var language: String {
@@ -17,13 +17,13 @@ import UIKit
     }
 }
 
-@objc public protocol PublicProtocal {
+@objc  protocol PublicProtocal {
     @objc optional func sayHello(in lang: RequiredLanguage)
 }
 
 class SetLanguage {
     
-    public weak var greetingDelegate: PublicProtocal?
+     weak var greetingDelegate: PublicProtocal?
     
     init(){
         debugPrint("Set Language init")
