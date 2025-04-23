@@ -1,7 +1,31 @@
 //MARK: Combine
-///get_memes
+
 import Foundation
 import Combine
+
+struct MemeResponse: Codable {
+    let success: Bool
+    let data: MemeData
+}
+
+struct MemeData: Codable {
+    let memes: [Meme]
+}
+
+struct Meme: Codable {
+    let id: String
+    let name: String
+    let url: String
+    let width: Int
+    let height: Int
+    let boxCount: Int
+    let captions: Int
+
+    enum CodingKeys: String, CodingKey {
+        case id, name, url, width, height, captions
+        case boxCount = "box_count"
+    }
+}
 
 enum Endpoint: String {
     case getMemes
@@ -42,8 +66,8 @@ final class NetworkService {
     
     private init(){}
     
-    func fetchMemes<T: Decodable>(endPoints: Endpoint, id: Int? = nil, type: T.Type) -> Future<[T], Error> {
-        return Future<[T], Error> { promise in
+    func getRequest<T: Decodable>(endPoints: Endpoint, id: Int? = nil, type: T.Type) -> Future<T, Error> {
+        return Future<T, Error> { promise in
             var urlString = self.baseUrlString + endPoints.rawValue
             if let id = id {
                 urlString += "/\(id)"
@@ -61,7 +85,7 @@ final class NetworkService {
                     }
                     return data
                 }
-                .decode(type: [T].self, decoder: JSONDecoder())
+                .decode(type: T.self, decoder: JSONDecoder())
                 .receive(on: RunLoop.main)
                 .sink(receiveCompletion: { completion in
                     if case let .failure(error) = completion {
@@ -84,5 +108,28 @@ final class NetworkService {
 }
 
 class ViewModel {
+    var memes: [Meme] = []
+    private var cancellables = Set<AnyCancellable>()
     
+    func getMemes(endPoints:Endpoint) {
+        NetworkService.share.getRequest(endPoints: endPoints, type: MemeResponse.self).sink(receiveCompletion: { completion in
+            if case let .failure(error) = completion {
+                print("❌ Error: \(error.localizedDescription)")
+            }
+        }, receiveValue: { response in
+            debugPrint(response.data.memes.count)
+            print(response.data)
+            self.memes = response.data.memes
+        }).store(in: &cancellables)
+    }
+    
+    func printData(){
+        for datum in self.memes {
+            print("Name: \(datum.name)\nURL: \(datum.url)\nCaptions: \(datum.captions)")
+        }
+    }
 }
+let result = ViewModel()
+result.getMemes(endPoints: .getMemes)
+result.printData()
+
