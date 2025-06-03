@@ -66,7 +66,7 @@ final class NetworkService {
     
     private init(){}
     
-    func getRequest<T: Decodable>(endPoints: Endpoint, id: Int? = nil, type: T.Type) -> Future<T, Error> {
+    func fetchMemes<T: Decodable>(endPoints: Endpoint, id: Int? = nil, type: T.Type) -> Future<T, Error> {
         return Future<T, Error> { promise in
             var urlString = self.baseUrlString + endPoints.rawValue
             if let id = id {
@@ -112,14 +112,14 @@ class ViewModel {
     private var cancellables = Set<AnyCancellable>()
     
     func getMemes(endPoints:Endpoint) {
-        NetworkService.share.getRequest(endPoints: endPoints, type: MemeResponse.self).sink(receiveCompletion: { completion in
+        NetworkService.share.fetchMemes(endPoints: endPoints, type: MemeResponse.self).sink(receiveCompletion: { completion in
             if case let .failure(error) = completion {
                 print("❌ Error: \(error.localizedDescription)")
             }
         }, receiveValue: { response in
             debugPrint(response.data.memes.count)
-            print(response.data)
             self.memes = response.data.memes
+            self.printData()
         }).store(in: &cancellables)
     }
     
@@ -131,5 +131,5 @@ class ViewModel {
 }
 let result = ViewModel()
 result.getMemes(endPoints: .getMemes)
-result.printData()
+//result.printData()
 
