@@ -1,4 +1,4 @@
-//MARK: Array
+//MARK: Closure
 
 //Q1: What is a closure in Swift?
 //A closure is a self-contained block of code that can be passed around and used later. Closures can capture and store references to variables and constants from the surrounding context in which they are defined.
